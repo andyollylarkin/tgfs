@@ -10,3 +10,4 @@ tmp/*
 test.cpp
 
 lib/*
+!lib/README.md
