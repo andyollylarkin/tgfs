@@ -4,8 +4,12 @@
 #include <fuse.h>
 #include <iostream>
 #include <string>
+#include "fs_entry.hpp"
+#include "boost/filesystem.hpp"
+#include <fstream>
 
 using namespace std;
+using namespace boost::filesystem;
 
 const string example_file = "example.txt";
 
@@ -13,12 +17,13 @@ static const string root_path = "/";
 static const string hello_str = "Hello World!\n";
 static const string hello_path = "/hello";
 
-class MyFs : public Fusepp::Fuse<MyFs>
+class FuseFs : public Fusepp::Fuse<FuseFs>
 {
 public:
-	MyFs() {}
+	FuseFs() {
+	};
 
-	~MyFs() {}
+	~FuseFs() {}
 
 	static int getattr(const char *path, struct stat *stbuf, struct fuse_file_info *)
 	{

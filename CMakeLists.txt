@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 project(tgfs)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 if(APPLE)
@@ -16,9 +16,8 @@ message(STATUS "compiler version: ${COMPILER_VERSION}")
 set(
     SOURCES
     main.cpp
+    fs_entry.cpp
 )
-
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_GLIBCXX_USE_CXX11_ABI=0")
 
 if(UNIX AND NOT APPLE)
     find_package(PkgConfig REQUIRED)
