@@ -1,17 +1,14 @@
 #include "sqlite_metastorage.hpp"
 #include <string>
 #include <sqlite3.h>
-#include <stdexcept>
 #include <iostream>
 #include <memory>
 
 SqliteMetaStorage::SqliteMetaStorage(const std::string db_path)
 {
-	sqlite3 *db;
-
-	if (sqlite3_open(db_path.c_str(), &db) != SQLITE_OK)
+	if (sqlite3_open(db_path.c_str(), &this->db_) != SQLITE_OK)
 	{
-		throw std::runtime_error("invalid sqlite db initialization: " + std::string(sqlite3_errmsg(db_)));
+		throw std::runtime_error("invalid sqlite db initialization: " + std::string(sqlite3_errmsg(this->db_)));
 	};
 }
 
@@ -58,7 +55,8 @@ std::shared_ptr<FsEntry> SqliteMetaStorage::find_entry(std::string path)
 	}
 
 	std::shared_ptr<FsEntry> entry = nullptr;
-	if (sqlite3_step(stmt) == SQLITE_ROW)
+	int st = sqlite3_step(stmt);
+	if (st == SQLITE_ROW)
 	{
 		entry = std::make_shared<FsEntry>();
 		entry->path = std::string(reinterpret_cast<const char *>(sqlite3_column_text(stmt, 0)));
@@ -69,6 +67,12 @@ std::shared_ptr<FsEntry> SqliteMetaStorage::find_entry(std::string path)
 		entry->atime = sqlite3_column_int64(stmt, 5);
 		entry->ctime = sqlite3_column_int64(stmt, 6);
 	}
+	else
+	{
+		sqlite3_finalize(stmt);
+
+		throw NotFoundException("Path not found: " + path);
+	}
 
 	sqlite3_finalize(stmt);
 	return entry;
@@ -76,4 +80,7 @@ std::shared_ptr<FsEntry> SqliteMetaStorage::find_entry(std::string path)
 
 void SqliteMetaStorage::update_entry(std::shared_ptr<FsEntry> entry) {}
 
-std::shared_ptr<FsEntry> get_parent(std::string path) {}
+std::shared_ptr<FsEntry> SqliteMetaStorage::get_parent(std::string path)
+{
+	return nullptr;
+}

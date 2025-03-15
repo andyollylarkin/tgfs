@@ -1,19 +1,17 @@
-#include "boost/filesystem.hpp"
-#include <sys/stat.h>
+#pragma once
+// #include "boost/filesystem.hpp"
 #include <vector>
 #include <string>
 #include <sys/stat.h>
 
 #define PART_DELIMITER ','
 
-using namespace boost::filesystem;
+// using namespace boost::filesystem;
 
 enum EntryType
 {
-	FILE,
-	DIRECTORY,
-	SYMLINK,
-	UNKNOWN
+	RFILE,
+	DIRECTORY
 };
 
 std::string resolve_path_to_absolute(const std::string &path);
