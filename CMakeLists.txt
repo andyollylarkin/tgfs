@@ -17,11 +17,13 @@ set(
     SOURCES
     main.cpp
     fs_entry.cpp
+    db_manager.cpp
 )
 
 if(UNIX AND NOT APPLE)
     find_package(PkgConfig REQUIRED)
     pkg_check_modules(FUSE REQUIRED fuse3)
+    pkg_check_modules(SQLITE3 REQUIRED sqlite3)
     # Добавляем найденные пути из pkg-config
     include_directories(${FUSE_INCLUDE_DIRS})
     link_directories(${FUSE_LIBRARY_DIRS})
@@ -49,6 +51,7 @@ if(UNIX AND NOT APPLE)
             SQLiteCpp
             crypto
             pthread
+            sqlite3
     )
 
 

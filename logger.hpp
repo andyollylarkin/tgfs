@@ -1,6 +1,6 @@
 #include <string>
 
-class Logger
+class ILogger
 {
 public:
 	virtual void info(std::string message) = 0;
